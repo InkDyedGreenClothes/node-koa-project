@@ -12,6 +12,8 @@
 <script>
 // @ is an alias to /src
 import io from 'socket.io-client';
+import config from '@/config/config';
+import util from 'utils/util';
 export default {
   name: 'Home',
   data() {
@@ -22,22 +24,43 @@ export default {
     };
   },
   created() {
-    this.socket = io('http://172.16.10.13:8888');
+    let data = JSON.parse(util.getCookie('myUser'));
+    // console.log(data);
+    this.socket = io(`${config.socketUrl}`);
     // console.log(this.socket);
-    this.socket.on('connect', () => {
-      if (this.socket.connected) {
-        console.log('连接成功');
-      }
-    });
+    // this.socket.on('connect', () => {
+    //   if (this.socket.connected) {
+    //     console.log('连接成功');
+    //   }
+    // });
+    this.socket.emit('login', data);
+  },
+  mounted() {
+    this.receiveUser();
   },
   methods: {
     socketSend() {
       this.socket.emit('message', { message: this.message });
+      this.socket.on('message', data => {
+        // console.log(data);
+      });
     },
     disconnected() {
       this.socket.on('connect', () => {
         if (!this.socket.connected) {
           console.log('断开连接');
+        }
+      });
+    },
+    receiveUser() {
+      let _that = this;
+      this.socket.on('login', data => {
+        console.log(data);
+        for (let key in data.onLineUsers) {
+          _that.userList.push({
+            id: key,
+            name: data.onLineUsers[key]
+          });
         }
       });
     }

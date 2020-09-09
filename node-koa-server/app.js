@@ -142,31 +142,44 @@ router.get('/getPhtots', KoaBody(), async ctx => {
 
 })
 // 在线用户
-let onLineUsers = {}
+let onLineArr = []
 // 在线人数
 let onLineCount = 0;
-
+let userData = {};
 io.on('connection', socket => {
-    console.log('有人连接了');
-    onLineCount++;
-    if (socket.id) {
-
-    }
     socket.on('login', (data) => {
-        socket.name = data.userid;
-        if (!onLineUsers.hasOwnProperty(data.userid)) {
-            onLineUsers[data.userid] = data.username;
-            // 在线人数累加
+        console.log('有人连接了');
+        // data.socket = socket
+        userData = data
+        let every = onLineArr.some((item, i) => {
+            return item.id == userData && userData.id
+        })
+        console.log(every);
+        if (!every) {
             onLineCount++;
+            socket.name = data.id;
+            onLineArr.push(data)
         }
-        // 向所有用户广播新用户加入
-        io.emit('login', { onLineUsers, onLineCount, user: data });
-        console.log(`${data.username}加入了聊天室`);
+        // 向其他用户广播新用户加入
+        socket.broadcast.emit('login', { onLineArr: onLineArr, onLineCount });
     })
+    // 接收信息
     socket.on('message', (data) => {
         console.log(data);
+        socket.broadcast.emit('message', data)
+    })
+    // 断开连接
+    socket.on('disconnect', () => {
+        onLineCount--;
+        onLineArr.map((item, i) => {
+            if (item.id == userData.id) {
+                onLineArr.splice(i, 1);
+            }
+        })
+        console.log('断开连接');
     })
 })
+
 
 
 // 鉴权函数
@@ -202,6 +215,6 @@ async function authentication(ctx, next) {
 }
 app.use(router.routes())
 
-server.listen(8888, () => {
-    console.log('服务器开启成功，请访问：http://localhost:8888/public/index.html');
+server.listen(8002, () => {
+    console.log('服务器开启成功，请访问：http://localhost:8002/public/index.html');
 })

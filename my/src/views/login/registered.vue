@@ -1,5 +1,6 @@
 <template>
   <div class="registered">
+    <navBar :navBarObj="navBarObj"></navBar>
     <van-form @submit="verifyPassword">
       <van-field v-model="userName" name="userName" label="账号" placeholder="请输入账号" />
       <van-field v-model="nikeName" name="nikeName" label="昵称" placeholder="请输入昵称" />
@@ -20,15 +21,21 @@
 </template>
 
 <script>
-import util from '../../utils/util';
-import { registered } from '../../api/api';
+import util from 'utils/util';
+import { registered } from 'api/api';
+import navBar from 'components/navBar/navBar';
 export default {
   data() {
     return {
       userName: '',
       nikeName: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      navBarObj: {
+        isLeftArrow: true,
+        leftText: '',
+        title: '注册'
+      }
     };
   },
   methods: {
@@ -57,7 +64,6 @@ export default {
         userName: this.userName,
         password: this.password,
         nikeName: this.nikeName
-        
       };
       registered(data).then(res => {
         if (res.status == 200) {
@@ -68,6 +74,9 @@ export default {
         }
       });
     }
+  },
+  components: {
+    navBar
   }
 };
 </script>

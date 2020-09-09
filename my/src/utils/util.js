@@ -17,10 +17,10 @@ const util = {
 
         var token = ''
         try {
-            var user = this.getCookie('userinfo')
+            var user = this.getCookie('myUser')
             user = user && JSON.parse(user) || ''
-            if (user.sessionId) {
-                token = user.sessionId
+            if (user.token) {
+                token = user.token
             }
         } catch (error) {
             return ''

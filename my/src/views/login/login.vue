@@ -10,40 +10,78 @@
     <div class="form">
       <h1>{{ title }}</h1>
       <van-form @submit="login">
-        <van-field v-model="username" name="username" label="用户名" placeholder="用户名" />
+        <van-field v-model="userName" name="userName" label="用户名" placeholder="用户名" />
         <van-field v-model="password" name="password" type="password" label="密码" placeholder="密码" />
         <div style="margin: 16px;">
-          <van-button round block type="info" native-type="submit">登陆</van-button>
+          <van-button round block type="info" :disabled="!showBtn" native-type="submit">登陆</van-button>
         </div>
       </van-form>
-      <div class="registered">还没有账号？<span @click="registered">注册</span> 一个吧</div>
+      <div class="registered">
+        还没有账号？
+        <span @click="registered">注册</span> 一个吧
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { login } from 'api/api';
+import util from 'utils/util';
 export default {
   data() {
     return {
       name: 'login',
       title: '欢迎登陆',
+      showBtn: false, // 是否显示登陆
       isSignup: false, // 显示注册 or 登陆
-      username: '', // 账号
-      password: '' // 密码
+      userName: 'admin', // 账号
+      password: '123456' // 密码
     };
   },
   mounted() {
-    // this.$util.delToken();
-    // this.$util.Toast(123)
+    util.delCookie('myUser');
+  },
+  computed: {
+    loginData() {
+      const { userName, password } = this;
+      return {
+        userName,
+        password
+      };
+    }
+  },
+  watch: {
+    loginData(val) {
+      if (val.userName && val.password.length >= 6) {
+        this.showBtn = true;
+      } else {
+        this.showBtn = false;
+      }
+    }
   },
   methods: {
+    // 校验字段
+    verify() {},
     login(values) {
-      let _self = this;
-      // console.log(_self.$util.factorialize(123))
-      // _self.$util.Log(values)
-      // _self.$util.setToken("1");
-      // _self.$router.replace("/");
+      let data = {
+        userName: this.userName,
+        password: this.password
+      };
+      login(data).then(res => {
+        util.showLoad('正在登陆');
+        if (res.code == 200) {
+          util.hideLoad();
+          if (res.status == 200) {
+            util.showTip(res.message);
+            util.setCookie('myUser', JSON.stringify(res.data))
+            this.$router.push('/');
+          } else {
+            util.showTip(res.message);
+          }
+        }
+      });
     },
+    // 跳转注册
     registered() {
       this.$router.push('/registered');
     }
@@ -73,7 +111,7 @@ export default {
     width: 100%;
     text-align: center;
     span {
-      color: rgb(0,188,156);
+      color: rgb(0, 188, 156);
     }
   }
 }

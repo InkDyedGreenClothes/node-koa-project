@@ -6,7 +6,7 @@ function resolve(dir) {
 
 
 module.exports = {
-  outputDir: 'dist/shelter-app',
+  outputDir: 'dist/myHtml',
   publicPath: './',
   assetsDir: './',
   lintOnSave: false,
@@ -18,6 +18,8 @@ module.exports = {
       .set('components', resolve('src/components'))
       .set('assets', resolve('src/assets'))
       .set('common', resolve('src/common'))
+      .set('api', resolve('src/api'))
+      .set('utils', resolve('src/utils'))
   },
   css: {
     loaderOptions: {

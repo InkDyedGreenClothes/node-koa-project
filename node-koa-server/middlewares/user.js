@@ -32,14 +32,14 @@ const registered = async (ctx, next) => {
 const login = async (ctx, next) => {
   let { userName, password } = ctx.request.body
   // 获取用户 看用户是否已经存在 
-  const res = await getUsers(userName);
+  const [res] = await getUsers(userName);
   // console.log(res);
 
-  if (res.length > 0) {
+  if (res) {
     // registeredUser(data);
     // console.log(res[0]);
     // 判断用户密码 是否账号密码正确
-    if (userName != res[0].user_name || password != res[0].password) {
+    if (userName != res.user_name || password != res.password) {
       data = {
         ...util.seccessDefaultData,
         ...{
@@ -48,13 +48,23 @@ const login = async (ctx, next) => {
         }
       }
     } else {
-      let token = jwt.sign({ id: res[0].id, userName, password }, util.jwtSecret)
+      let token = 'Bearer ' + jwt.sign({
+        id: res.id,
+        userName: res.user_name,
+        password: res.password,
+        nikeName: res.nikeName
+      }, util.jwtSecret)
+
       ctx.set('Authorization', token)
+      // 通过此header设置允许前端访问
+      ctx.set('Access-Control-Expose-Headers', 'Authorization')
+
+      res.token = token;
       data = {
         ...util.seccessDefaultData,
         ...{
           message: '登录成功',
-          data: ''
+          data: res
         }
       }
     }

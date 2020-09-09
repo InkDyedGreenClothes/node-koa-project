@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+
+	<header id="loginBox">
+		<div id="loginBoxj">
+			<h3>注册/登录</h3>
+			账号：<input type="text" id="userName" /></br>
+			密码：<input type="password" id="passwordInput" />
+			<div id="message"></div>
+		</div>
+		<div id="btnBox">
+			<button id="login">登录</button>
+			<button id="registered">注册</button>
+		</div>
+	</header>
+	<button id="loginOut">退出</button>
+	<div id="content">
+		<button class="btn" id="uploadBtn">上传</button>
+		<input type="file" name="file" id="uploadFile" style="display: none;">
+		<div class="content-list">
+
+		</div>
+
+		<div class="task_panel">
+			<div class="task_header">
+				<h4>当前任务：<span class="num">0</span>/<span class="total_num">0</span></h4>
+
+				<span class="icon all-close"></span>
+			</div>
+			<ul class="task_body"></ul>
+		</div>
+	</div>
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/ajax.js"></script>
+<script src="./js/index.js"></script>
+
+</html>

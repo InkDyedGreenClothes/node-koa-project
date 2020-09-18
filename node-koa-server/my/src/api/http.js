@@ -99,7 +99,6 @@ export function postForm(url, params = {}) {
                 data: Qs.stringify(params)
             })
             .then(res => {
-                console.log(res);
                 resolve(res.data)
             })
             .catch(err => {

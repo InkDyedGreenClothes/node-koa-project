@@ -4,7 +4,7 @@
     <button @click="socketSend">发送</button>
     <select name id>
       <option value>请选择用户</option>
-      <option :value="item.id" v-for="item in userList" :key="item.id">{{ item.name }}</option>
+      <option :value="item.id" v-for="item in userList" :key="item.id">{{ item.user_name }}</option>
     </select>
   </div>
 </template>
@@ -56,12 +56,7 @@ export default {
       let _that = this;
       this.socket.on('login', data => {
         console.log(data);
-        for (let key in data.onLineUsers) {
-          _that.userList.push({
-            id: key,
-            name: data.onLineUsers[key]
-          });
-        }
+        _that.userList = data.onLineArr
       });
     }
   }

@@ -147,19 +147,31 @@ let onLineArr = []
 let onLineCount = 0;
 let userData = {};
 io.on('connection', socket => {
+    let dataSocket = socket
+    console.log('有人连接了');
     socket.on('login', (data) => {
-        console.log('有人连接了');
-        // data.socket = socket
+        // data.sdataSocket = dataSocket
+
         userData = data
+        
         let every = onLineArr.some((item, i) => {
-            return item.id == userData && userData.id
+            return item.id == userData.id
         })
-        console.log(every);
+        // 第一次无论如何都 加入
+        if (onLineArr.length == 0) {
+            onLineCount++;
+            socket.name = data.id;
+            onLineArr.push(data)
+        }
+        console.log(socket);
+        
+        // 判断是否存在一个 如果存在 就不存入 否则就存入
         if (!every) {
             onLineCount++;
             socket.name = data.id;
             onLineArr.push(data)
         }
+        
         // 向其他用户广播新用户加入
         socket.broadcast.emit('login', { onLineArr: onLineArr, onLineCount });
     })

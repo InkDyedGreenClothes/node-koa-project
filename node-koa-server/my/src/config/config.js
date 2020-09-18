@@ -20,6 +20,7 @@ const config = (() => {
     // 测试
     else {
         host = 'http://172.16.10.13'
+        host = 'http://192.168.2.101'
         // host = 'http://107.182.25.49'
         hostUpload = 'http://47.111.175.231'
         hostImg = 'http://39.104.133.145'

@@ -157,13 +157,13 @@ io.on('connection', socket => {
         let every = onLineArr.some((item, i) => {
             return item.id == userData.id
         })
+        // console.log(every);
         // 第一次无论如何都 加入
         if (onLineArr.length == 0) {
             onLineCount++;
             socket.name = data.id;
             onLineArr.push(data)
         }
-        console.log(socket);
         
         // 判断是否存在一个 如果存在 就不存入 否则就存入
         if (!every) {
@@ -173,7 +173,7 @@ io.on('connection', socket => {
         }
         
         // 向其他用户广播新用户加入
-        socket.broadcast.emit('login', { onLineArr: onLineArr, onLineCount });
+        socket.broadcast.emit('login', { onLineArr: onLineArr, onLineCount, every });
     })
     // 接收信息
     socket.on('message', (data) => {
@@ -227,6 +227,6 @@ async function authentication(ctx, next) {
 }
 app.use(router.routes())
 
-server.listen(8002, () => {
+server.listen(8001, () => {
     console.log('服务器开启成功，请访问：http://localhost:8002/public/index.html');
 })

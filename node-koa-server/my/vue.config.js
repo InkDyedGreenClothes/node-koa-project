@@ -6,7 +6,7 @@ function resolve(dir) {
 
 
 module.exports = {
-  outputDir: 'dist/myHtml',
+  outputDir: '../html',
   publicPath: './',
   assetsDir: './',
   lintOnSave: false,

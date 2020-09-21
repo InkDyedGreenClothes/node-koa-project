@@ -1,7 +1,6 @@
 <!--
- * @Author: Longlong
+ * @Author: 
  * @Date: 2020-03-19 11:15:54
- * @LastEditors: Longlong
  * @LastEditTime: 2020-04-14 10:51:35
  * @Descripttion: describe
  -->
@@ -32,7 +31,7 @@ export default {
     return {
       name: 'login',
       title: '欢迎登陆',
-      showBtn: false, // 是否显示登陆
+      showBtn: true, // 是否显示登陆
       isSignup: false, // 显示注册 or 登陆
       userName: 'admin', // 账号
       password: '123456' // 密码

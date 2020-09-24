@@ -3,16 +3,7 @@ module.exports = {
   privateKey: 'c:/Users/.ssh/id_rsa',
   passphrase: '',
   dev: {
-    // 环境对象
-    name: '开发环境', // 环境名称
-    script: 'npm run build', // 打包命令
-    host: '107.182.25.49', // 服务器地址
-    port: 27482, // 服务器端口号
-    username: 'root', // 服务器登录用户名
-    password: 'zklLPcbeg9eb', // 服务器登录密码
-    distPath: 'dist', // 本地打包生成目录
-    webDir: '/www/wwwroot/node-server/node-koa-server/html', // 服务器部署路径（不可为空或'/'）
-    isRemoveRemoteFile: true // 是否删除远程文件（默认true）
+   
   },
   test: {
     // 环境对象

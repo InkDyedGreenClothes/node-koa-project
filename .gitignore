@@ -3,6 +3,7 @@
 /my/node_modules
 /node-koa-server/node_modules
 /node-koa-server/html
+/node-koa-server/my/deploy.config.js
 
 
 # local env files
